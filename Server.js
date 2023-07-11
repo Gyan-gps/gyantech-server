@@ -123,20 +123,26 @@ app.post("/sendMessage", async (req, res) => {
   }
 });
 app.get("/getAllMessage", async (req, res) => {
-    const {me,you} = req.query;
-    console.log(req.query)
-    try{
+  const { me, you } = req.query;
+  console.log(req.query);
+  try {
+    const messages = await messageSchema
+      .find({
+        $or: [
+          { you, me },
+          { you: me, me: you },
+        ],
+      })
+      .sort({ createdAt: 1 });
+    console.log("messages", messages);
 
-        const messages = await messageSchema.find({$or:[{you,me},{you:me,me:you}]}).sort({ createdAt: 1 });
-        console.log("messages",messages)
-      
-        res.send({ status: 200, data:messages });
-    }catch(err){
-        res.send({
-            status:400,
-            data:res
-        })
-    }
+    res.send({ status: 200, data: messages });
+  } catch (err) {
+    res.send({
+      status: 400,
+      data: res,
+    });
+  }
 });
 
 app.post("/createRoom", async (req, res) => {
@@ -183,7 +189,7 @@ const server = app.listen(8000, () => {
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://gyantech-client.vercel.app/", //http://localhost:5173",
   },
 });
 
