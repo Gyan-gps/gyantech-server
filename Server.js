@@ -48,6 +48,7 @@ app.post("/signup", async (req, res) => {
         console.log(data);
         return res.send({
           status: 200,
+          data,
         });
       } catch (err) {
         console.log(err);
