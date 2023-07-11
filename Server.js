@@ -189,7 +189,7 @@ const server = app.listen(8000, () => {
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "https://gyantech-client.vercel.app/", //http://localhost:5173",
+    origin: "https://gyantech-client.vercel.app", //http://localhost:5173",
   },
 });
 
